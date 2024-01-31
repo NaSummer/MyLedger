@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+.income-number {
+    color: red;
+    font-weight: bold;
+}
+.expense-number {
+    color: green;
+    font-weight: bold;
+}
+.balance-number {
+    font-weight: bold;
+}
