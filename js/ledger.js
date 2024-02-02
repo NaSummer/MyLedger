@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterTypeSelect = document.getElementById('filter-type');
     const pageSizeSelect = document.getElementById('page-size');
     let currentPage = 1;
-    let totalPages = 10; // 默认有10页
+    let currentPageSize = 10; // 默认一页显示10条
 
     // 筛选逻辑
     filterTypeSelect.addEventListener('change', function() {
@@ -287,6 +287,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 页大小选择更改事件
     pageSizeSelect.addEventListener('change', function() {
+        // 计算当前页面的第一条数据，在变更后会处于哪一页
+        const firstDataIndex = (currentPage - 1) * currentPageSize;
+        currentPageSize = pageSizeSelect.value;
+        currentPage = Math.floor(firstDataIndex / currentPageSize) + 1;
         fetchTransactionDetails(currentPage, filterTypeSelect.value);
     });
 

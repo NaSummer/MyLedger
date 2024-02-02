@@ -56,7 +56,7 @@ try {
     }
 
     // 添加分页和排序
-    $sql .= " ORDER BY happened_at ASC LIMIT ? OFFSET ?";
+    $sql .= " ORDER BY happened_at DESC LIMIT ? OFFSET ?";
     array_push($params, $limit, $offset);
     $types .= "ii"; // 添加limit和offset的类型（整数）
 
