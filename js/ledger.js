@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
             dataType: 'json',
             success: function(data) {
                 if(data && data.nickname) {
-                    $('#nickname').text(data.nickname);
+                    if(data.nickname === '未知のユーザー') {
+                        $('#nickname').text(data.nickname);
+                    } else {
+                        $('#nickname').text(data.nickname + 'さん');
+                    }
                 }
             },
             error: function(error) {
