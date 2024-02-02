@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLedger</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ledger.css">
+</head>
+<body>
+    <div class="container">
+        
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <h1>ようこそ、<span id="nickname"><!-- ユーザー名はJavaScriptで読み込まれます --></span></h1>
+            <button id="logout-button" class="btn btn-danger">ログアウト</button>
+        </div>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">概要</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#accounting">記帳</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#details">取引明細</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#import">インポート</a></li>
+            <!-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#export">エクスポート</a></li> -->
+        </ul>
+
+        <div class="tab-content mt-4">
+
+            <!-- 概要 tab -->
+            <!-- <div id="overview" class="container tab-pane active">
+                <p>残高：<span id="balance"></span></p>
+                <p>総収入：<span id="total-income"></span></p>
+                <p>総支出：<span id="total-expense"></span></p>
+                <p>今月の総支出：<span id="monthly-expense"></span></p>
+                <p>今月の総収入：<span id="monthly-income"></span></p>
+                <p>今日の総支出：<span id="daily-expense"></span></p>
+                <p>今日の総収入：<span id="daily-income"></span></p>
+                <p>今週の総支出：<span id="weekly-expense"></span></p>
+                <p>今週の総収入：<span id="weekly-income"></span></p>
+                <p>今年の総支出：<span id="yearly-expense"></span></p>
+                <p>今年の総収入：<span id="yearly-income"></span></p>
+            </div> -->
+            
+            <!-- 概要 tab -->
+            <div id="overview" class="container tab-pane active">
+                <div class="row">
+                    <!-- 残高 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title">残高</h5>
+                                <p class="card-text text-right balance-number"><span id="balance"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 総収入 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title">総収入</h5>
+                                <p class="card-text text-right income-number"><span id="total-income"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 総支出 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title">総支出</h5>
+                                <p class="card-text text-right expense-number"><span id="total-expense"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 今月の収支Chart -->
+                    <div class="col-md-12 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0"><span class="month-number">今</span>月の収支</h5>
+                                    <div class="monthly-summary">
+                                        <span class="text-success" id="currentMonthIncome">収入　¥<span id="monthly-income">0</span></span>
+                                        <span class="text-danger ml-3" id="currentMonthExpense">支出　¥<span id="monthly-expense">0</span></span>
+                                    </div>
+                                </div>
+                                <canvas id="incomeExpenseChart"></canvas>
+                            </div>
+                        </div>
+                    </div>                    
+                    <!-- <div class="col-md-12 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title"><span class="month-number">今</span>月の収支</h5>
+                                <canvas id="incomeExpenseChart"></canvas>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- 今月の総支出 -->
+                    <!-- <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title"><span class="month-number">今</span>月の総支出</h5>
+                                <p class="card-text text-right expense-number"><span id="monthly-expense"></span></p>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- 今月の総収入 -->
+                    <!-- <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title"><span class="month-number">今</span>月の総収入</h5>
+                                <p class="card-text text-right income-number"><span id="monthly-income"></span></p>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- 今週の総支出 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title">今週の総支出</h5>
+                                <p class="card-text text-right expense-number"><span id="weekly-expense"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 今週の総収入 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title">今週の総収入</h5>
+                                <p class="card-text text-right income-number"><span id="weekly-income"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 今年の総支出 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title"><span class="year-number">今</span>年の総支出</h5>
+                                <p class="card-text text-right expense-number"><span id="yearly-expense"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 今年の総収入 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card rounded-lg">
+                            <div class="card-body">
+                                <h5 class="card-title"><span class="year-number">今</span>年の総収入</h5>
+                                <p class="card-text text-right income-number"><span id="yearly-income"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+
+            <!-- 記帳 tab -->
+            <div id="accounting" class="container tab-pane fade">
+                <!-- <h3>記帳</h3> -->
+                <form id="accountingForm">
+                    <div class="form-group">
+                        <label for="type">タイプ</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="expense">支出</option>
+                            <option value="income">収入</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">金額</label>
+                        <input type="number" class="form-control" id="amount" name="amount" required>
+                    </div>
+                    <!-- 非表示、通貨変換ロジックまだできていない -->
+                    <div class="form-group" style="display: none;">
+                        <label for="currency_id">通貨</label>
+                        <select class="form-control" id="currency_id" name="currency_id">
+                            <option value="1">JPY</option>
+                            <option value="2">CNY</option>
+                            <option value="3">USD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">日付</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">時間</label>
+                        <input type="time" class="form-control" id="time" name="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memo">メモ</label>
+                        <textarea class="form-control" id="memo" name="memo"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">記帳する</button>
+                        </div>
+                        <div class="col">
+                            <div id="accounting-message" class="alert" style="display:none;"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 取引明細 tab -->
+            <div id="details" class="container tab-pane fade">
+                <!-- <h3>取引明細</h3> -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <label for="filter-type">タイプ</label>
+                        <select id="filter-type" class="form-control">
+                            <option value="all">全部</option>
+                            <option value="income">収入</option>
+                            <option value="expense">支出</option>
+                        </select>
+                    </div>
+                    <button id="export-button" class="btn btn-secondary">エクスポート</button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            <!-- ページ番号はJavaScriptで動的に生成されます -->
+                            <li class="page-item"><a class="page-link" href="#">前のページ</a></li>
+                            <li class="page-item disabled"><span class="page-link" id="pagination-info"></span></li>
+                            <li class="page-item"><a class="page-link" href="#">次のページ</a></li>
+                        </ul>
+                    </nav>
+                    <div class="d-flex align-items-center">
+                        <label class="mb-0 mr-2" for="page-size">ページ当たりの項目数</label>
+                        <select id="page-size" class="form-control">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="table table-striped mt-3">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">日付</th>
+                            <th style="width: 10%;">タイプ</th>
+                            <th class="text-right" style="width: 10%;">金額</th>
+                            <th style="width: 10%;">通貨</th>
+                            <th style="width: 30%;">メモ</th>
+                            <th style="width: 20%;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-details">
+                        <!-- 取引明細データはJavaScriptで動的に読み込まれます -->
+                    </tbody>
+                </table>
+
+                <!-- 编辑模态框transaction editing modal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form id="editForm">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">交易編集</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="edit-id" name="id">
+                                    <div class="form-group">
+                                        <label for="edit-type">タイプ</label>
+                                        <select class="form-control" id="edit-type" name="type">
+                                            <option value="income">収入</option>
+                                            <option value="expense">支出</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-amount">金額</label>
+                                        <input type="number" class="form-control" id="edit-amount" name="amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-date">日付</label>
+                                        <input type="date" class="form-control" id="edit-date" name="date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-time">時間</label>
+                                        <input type="time" class="form-control" id="edit-time" name="time">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-memo">メモ</label>
+                                        <textarea class="form-control" id="edit-memo" name="memo"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                                    <button type="submit" class="btn btn-primary">保存</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- インポート tab -->
+            <div id="import" class="container tab-pane fade">
+                <!-- <h3>インポート</h3> -->
+                <form id="importForm">
+                    <div class="form-group">
+                        <label for="importFile">ファイル選択：</label>
+                        <input type="file" class="form-control-file" id="importFile" accept=".csv" required>
+                    </div>
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">日付</th>
+                                <th style="width: 10%;">タイプ</th>
+                                <th class="text-right" style="width: 10%;">金額</th>
+                                <th style="width: 10%;">通貨</th>
+                                <th style="width: 40%;">メモ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="preview-table-body">
+                            <!-- データはJavaScriptで動的に読み込まれます -->
+                        </tbody>
+                    </table>
+                    <div class="form-row">
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">インポート</button>
+                        </div>
+                        <div class="col">
+                            <div id="import-result" class="alert" style="display:none;"></div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/ledger.js"></script>
+</body>
+</html>
