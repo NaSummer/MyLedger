@@ -1,2 +1,28 @@
+# database auth info inside
 create_db.sql
 db.php
+
+# ignore test directory
+test/
+dict/
+
+# ================== 标准的 glob 模式 用于匹配文件名 ==================
+# 忽略所有 .log 文件
+# *.log
+# 忽略所有单个字符的 .txt 文件，比如 a.txt
+# ?.txt
+# 忽略所有目录下的 logs 目录
+# **/logs
+# 忽略 Test.txt 和 test.txt
+# [Tt]est.txt
+# 
+# 忽略 doc 目录
+# doc/
+# 不要忽略 README.md
+# !README.md
+# 忽略除此目录外的所有 .txt 文件
+# !docs/*.txt
+# 
+# 忽略所有 .pdf 文件，但保留 docs/paper.pdf
+# *.pdf
+# !docs/paper.pdf

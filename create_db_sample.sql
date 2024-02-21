@@ -1,4 +1,4 @@
--- rootで
+-- under root
 CREATE USER 'web'@'localhost' IDENTIFIED BY '123456';
 ALTER USER 'web'@'localhost' IDENTIFIED BY '123456';
 FLUSH PRIVILEGES;
@@ -6,7 +6,7 @@ CREATE DATABASE ledger_db;
 GRANT ALL PRIVILEGES ON ledger_db.* TO 'web'@'localhost';
 
 
--- webで
+-- under "web" user
 
 USE ledger_db;
 

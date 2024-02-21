@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // default submit action を防止する
         e.preventDefault();
 
+        // エラーメッセージを非表示にする
+        loginErrorMessage.style.display = 'none';
+
         // 入力されたメールアドレスとパスワードを取得する
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
@@ -63,6 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
     registerForm.addEventListener('submit', function(e) {
         // default submit action を防止する
         e.preventDefault();
+
+        // エラーメッセージを非表示にする
+        registerErrorMessage.style.display = 'none'; 
 
         // 入力されたデータを取得する
         const email = document.getElementById('register-email').value;

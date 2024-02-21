@@ -1,20 +1,41 @@
+/**
+ * Project: MyLedger
+ * File: ledger.js
+ * Author: NaSummer
+ * Created: 2023-12-10
+ * Modified: 2024-02-01
+ * Version: 1.1
+ * License: MIT
+ *
+ * Description:
+ * This script is responsible for loading data from server through ajax and control the dom behavior for ledger.html
+ *
+ * Changes History:
+ * - 2024-02-01: Fixed loding data process when changing page size in the transactions tab by NaSummer.
+ * - 2024-01-12: Added the data exporting feature by NaSummer.
+ * - 2024-01-10: Added the data loading feature of the overview tab by NaSummer.
+ * - 2023-12-17: Finished the transactions tab's features by NaSummer.
+ * - 2023-12-12: Finished the accounting tab's features by NaSummer.
+ * - 2023-12-10: Created file for the first time by NaSummer.
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // ================================= common =================================
 
     function unixTimeToFormattedString(unixTimestamp) {
-        // 创建一个 Date 对象，将 UNIX 时间戳乘以 1000 转换为毫秒级
+        // Create a Date object by multiplying the UNIX timestamp by 1000 to convert it to milliseconds.
         let date = new Date(unixTimestamp * 1000);
       
-        // 获取年、月、日、小时、分钟、秒
+        // Retrieve the year, month, day, hour, minute, and second.
         let year = date.getFullYear();
-        let month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要加1，并补齐两位
+        let month = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0, so add 1. Pad it to two digits.
         let day = String(date.getDate()).padStart(2, '0');
         let hours = String(date.getHours()).padStart(2, '0');
         let minutes = String(date.getMinutes()).padStart(2, '0');
         let seconds = String(date.getSeconds()).padStart(2, '0');
       
-        // 构建格式化的日期时间字符串
+        // Construct a formatted date-time string.
         let formattedString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       
         return formattedString;
@@ -31,7 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
             dataType: 'json',
             success: function(data) {
                 if(data && data.nickname) {
-                    $('#nickname').text(data.nickname);
+                    if(data.nickname === '未知のユーザー') {
+                        $('#nickname').text(data.nickname);
+                    } else {
+                        $('#nickname').text(data.nickname + 'さん');
+                    }
                 }
             },
             error: function(error) {
@@ -275,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterTypeSelect = document.getElementById('filter-type');
     const pageSizeSelect = document.getElementById('page-size');
     let currentPage = 1;
-    let totalPages = 10; // 默认有10页
+    let currentPageSize = 10; // 默认一页显示10条
 
     // 筛选逻辑
     filterTypeSelect.addEventListener('change', function() {
@@ -287,6 +312,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 页大小选择更改事件
     pageSizeSelect.addEventListener('change', function() {
+        // 计算当前页面的第一条数据，在变更后会处于哪一页
+        const firstDataIndex = (currentPage - 1) * currentPageSize;
+        currentPageSize = pageSizeSelect.value;
+        currentPage = Math.floor(firstDataIndex / currentPageSize) + 1;
         fetchTransactionDetails(currentPage, filterTypeSelect.value);
     });
 
