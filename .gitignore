@@ -4,6 +4,7 @@ db.php
 
 # ignore test directory
 test/
+dict/
 
 # ================== 标准的 glob 模式 用于匹配文件名 ==================
 # 忽略所有 .log 文件
