@@ -1,6 +1,6 @@
 # MyLedger
 
-[English](./README.md) | [日本語](./doc/README_JP.md)
+[English](../README.md) | [中文](./README_CN.md)
 
 PHPとMariaDBを基にしたシンプルなWEB家計簿アプリ。
 

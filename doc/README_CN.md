@@ -1,6 +1,6 @@
 # MyLedger
 
-[English](./README.md) | [日本語](./doc/README_JP.md)
+[English](../README.md) | [日本語](./README_JP.md)
 
 一个基于PHP和MariaDB的简易WEB记账应用
 
